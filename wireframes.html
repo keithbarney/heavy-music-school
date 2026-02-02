@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MusicDesk Wireframes</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #f3f4f6; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+    const MusicDeskWireframes = () => {
+      const [activeScreen, setActiveScreen] = useState('teacher-dashboard');
+
+      const screens = [
+        { id: 'teacher-dashboard', label: 'Teacher Home', group: 'Teacher' },
+        { id: 'teacher-profile', label: 'Teacher Profile', group: 'Teacher' },
+        { id: 'create-assignment', label: 'Create Assignment', group: 'Teacher' },
+        { id: 'student-profile', label: 'Student Profile', group: 'Teacher' },
+        { id: 'band-management', label: 'Bands', group: 'Teacher' },
+        { id: 'band-profile', label: 'Band Profile', group: 'Teacher' },
+        { id: 'student-dashboard', label: 'Student Home', group: 'Student' },
+        { id: 'assignment-detail', label: 'Assignment', group: 'Student' },
+        { id: 'submit-assignment', label: 'Submit Work', group: 'Student' },
+        { id: 'book-lesson', label: 'Schedule', group: 'Student' },
+        { id: 'parent-dashboard', label: 'Parent Home', group: 'Parent' },
+        { id: 'admin-dashboard', label: 'Admin Home', group: 'Admin' },
+        { id: 'notifications', label: 'Notifications', group: 'Shared' },
+        { id: 'messaging', label: 'Messages', group: 'Shared' },
+      ];
+
+      const groups = ['Teacher', 'Student', 'Parent', 'Admin', 'Shared'];
+
+      const Sidebar = ({ userType, onNotifications }) => {
+        const navItems = {
+          teacher: ['Dashboard', 'Assignments', 'Schedule', 'Students', 'Bands'],
+          student: ['Home', 'Assignments', 'Schedule'],
+          parent: ['Home', 'Schedule', 'Billing'],
+          admin: ['Overview', 'Teachers', 'Students', 'Programs', 'Reports'],
+        };
+        const items = navItems[userType] || navItems.teacher;
+        const names = {
+          teacher: { name: 'Sarah Chen', role: 'Teacher' },
+          student: { name: 'Emma Wilson', role: 'Student' },
+          parent: { name: 'Maria Garcia', role: 'Parent' },
+          admin: { name: 'David Park', role: 'Admin' },
+        };
+        const user = names[userType] || names.teacher;
+
+        return (
+          <div className="w-44 bg-gray-50 border-r border-gray-200 p-3 flex flex-col">
+            <div className="text-base font-bold text-gray-900 mb-4">🎵 MusicDesk</div>
+            <nav className="space-y-1 flex-1 text-sm">
+              {items.map((item, i) => (
+                <div key={item} className={`px-2 py-1.5 rounded cursor-pointer ${i === 0 ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-200'}`}>
+                  {item}
+                </div>
+              ))}
+              <div onClick={onNotifications} className="px-2 py-1.5 rounded cursor-pointer text-gray-600 hover:bg-gray-200 flex items-center justify-between">
+                <span>🔔 Notifications</span>
+                <span className="bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
+              </div>
+            </nav>
+            <div className="pt-3 border-t border-gray-200 mt-3">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-full bg-gray-300" />
+                <div className="text-xs">
+                  <div className="font-medium text-gray-900">{user.name}</div>
+                  <div className="text-gray-500">{user.role}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      return (
+        <div className="min-h-screen bg-gray-100 p-4 font-sans">
+          {/* Screen Selector */}
+          <div className="mb-4 space-y-2">
+            {groups.map(group => (
+              <div key={group} className="flex items-center gap-2 flex-wrap">
+                <span className="text-xs text-gray-500 w-16">{group}</span>
+                {screens.filter(s => s.group === group).map(s => (
+                  <button
+                    key={s.id}
+                    onClick={() => setActiveScreen(s.id)}
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                      activeScreen === s.id ? 'bg-gray-900 text-white' : 'bg-white text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          {/* Wireframe Container */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 max-w-4xl mx-auto">
+            <div className="flex min-h-[600px]">
+              {/* Dynamic Sidebar */}
+              <Sidebar
+                userType={
+                  ['teacher-dashboard', 'teacher-profile', 'create-assignment', 'student-profile', 'band-management', 'band-profile', 'messaging'].includes(activeScreen) ? 'teacher' :
+                  ['student-dashboard', 'submit-assignment', 'book-lesson', 'assignment-detail'].includes(activeScreen) ? 'student' :
+                  ['parent-dashboard'].includes(activeScreen) ? 'parent' :
+                  ['admin-dashboard'].includes(activeScreen) ? 'admin' : 'teacher'
+                }
+                onNotifications={() => setActiveScreen('notifications')}
+              />
+
+              {/* Main Content */}
+              <div className="flex-1 p-4 overflow-auto">
+
+                {/* ============ TEACHER DASHBOARD ============ */}
+                {activeScreen === 'teacher-dashboard' && (
+                  <div className="relative">
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-full bg-gray-300" />
+                        <div>
+                          <h1 className="text-lg font-bold text-gray-900">Sarah Chen</h1>
+                          <div className="text-sm text-gray-500">24 students</div>
+                          <div className="flex items-center gap-1 mt-1">
+                            <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">🎹 Piano</span>
+                            <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">🎸 Guitar</span>
+                            <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">🎤 Voice</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => setActiveScreen('create-assignment')} className="bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium">+ New Assignment</button>
+                        <button onClick={() => setActiveScreen('messaging')} className="bg-gray-100 px-3 py-2 rounded-lg text-sm flex items-center gap-1.5 hover:bg-gray-200">
+                          <span>💬</span> Messages
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h2 className="font-bold text-gray-900 text-sm">February 2026</h2>
+                        <div className="flex gap-1">
+                          <button className="text-xs text-gray-500 px-2">←</button>
+                          <button className="text-xs text-gray-500 px-2">→</button>
+                        </div>
+                      </div>
+                      <div className="border border-gray-200 rounded-lg overflow-hidden">
+                        <div className="grid grid-cols-7 bg-gray-50 border-b border-gray-200">
+                          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+                            <div key={i} className="p-1.5 text-xs text-gray-500 text-center font-medium">{d}</div>
+                          ))}
+                        </div>
+                        <div className="grid grid-cols-7 text-xs">
+                          {[26, 27, 28, 29, 30, 31, 1].map((d, i) => (
+                            <div key={i} className={`p-1 text-center border-b border-r border-gray-100 min-h-[32px] ${d > 25 ? 'text-gray-300' : ''}`}>
+                              <span>{d}</span>
+                            </div>
+                          ))}
+                          {[2, 3, 4, 5, 6, 7, 8].map((d, i) => (
+                            <div key={i} className={`p-1 text-center border-b border-r border-gray-100 min-h-[32px] ${d === 3 ? 'bg-blue-50' : ''} ${d === 6 ? 'bg-orange-50' : ''}`}>
+                              <span className={d === 3 || d === 6 ? 'font-bold' : ''}>{d}</span>
+                              {d === 3 && <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mx-auto mt-0.5"></div>}
+                              {d === 6 && <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mx-auto mt-0.5"></div>}
+                            </div>
+                          ))}
+                          {[9, 10, 11, 12, 13, 14, 15].map((d, i) => (
+                            <div key={i} className={`p-1 text-center border-b border-r border-gray-100 min-h-[32px] ${d === 10 ? 'bg-blue-50' : ''} ${d === 13 ? 'bg-orange-50' : ''}`}>
+                              <span className={d === 10 || d === 13 ? 'font-bold' : ''}>{d}</span>
+                              {d === 10 && <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mx-auto mt-0.5"></div>}
+                              {d === 13 && <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mx-auto mt-0.5"></div>}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex gap-3 mt-2 text-xs text-gray-500">
+                        <span className="flex items-center gap-1"><span className="w-2 h-2 bg-blue-500 rounded-full"></span> Lessons</span>
+                        <span className="flex items-center gap-1"><span className="w-2 h-2 bg-orange-500 rounded-full"></span> Rehearsals</span>
+                      </div>
+                    </div>
+
+                    <div className="mb-20">
+                      <div className="flex items-center justify-between mb-2">
+                        <h2 className="font-bold text-gray-900 text-sm">Assignments</h2>
+                        <div className="flex items-center gap-2">
+                          <input type="text" placeholder="Search..." className="text-xs border border-gray-200 rounded px-2 py-1 w-24" />
+                          <select className="text-xs border border-gray-200 rounded px-2 py-1">
+                            <option>All Status</option>
+                            <option>Needs Review</option>
+                            <option>Approved</option>
+                          </select>
+                          <select className="text-xs border border-gray-200 rounded px-2 py-1">
+                            <option>Due Date</option>
+                            <option>Student</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        {[
+                          { student: 'Emma Wilson', task: 'Scales - G Major', due: 'Jan 27', status: 'Needs Review' },
+                          { student: 'James Park', task: 'Bach Prelude in C', due: 'Jan 25', status: 'Needs Review' },
+                          { student: 'Lucas Garcia', task: 'Chord Transitions', due: 'Jan 29', status: 'Needs Review' },
+                          { student: 'Emma Wilson', task: 'Finger Positioning', due: 'Jan 22', status: 'Approved' },
+                        ].map((item, i) => (
+                          <div key={i} onClick={() => setActiveScreen('assignment-detail')} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-gray-300">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 rounded-full bg-gray-300" />
+                              <div>
+                                <div className="font-medium text-gray-900 text-sm">{item.student}</div>
+                                <div className="text-xs text-gray-500">{item.task}</div>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className={`text-xs px-2 py-0.5 rounded ${item.status === 'Approved' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>{item.status}</span>
+                              <span className="text-xs text-gray-400">Due {item.due}</span>
+                              <span className="text-gray-400">→</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="absolute bottom-0 right-0 w-64 bg-white border border-gray-200 rounded-t-lg shadow-lg">
+                      <div className="flex items-center justify-between p-2 bg-gray-900 text-white rounded-t-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-gray-400" />
+                          <span className="text-sm font-medium">Emma Wilson</span>
+                        </div>
+                        <button className="text-gray-400 hover:text-white">−</button>
+                      </div>
+                      <div className="h-32 p-2 space-y-2 overflow-auto bg-gray-50">
+                        <div className="flex justify-start">
+                          <div className="bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs max-w-[80%]">How did I do on the scales?</div>
+                        </div>
+                        <div className="flex justify-end">
+                          <div className="bg-gray-900 text-white rounded-lg px-2 py-1 text-xs max-w-[80%]">Great job! Keep practicing.</div>
+                        </div>
+                      </div>
+                      <div className="p-2 border-t border-gray-200">
+                        <div className="flex gap-1">
+                          <input type="text" placeholder="Type a message..." className="flex-1 border border-gray-200 rounded px-2 py-1 text-xs" />
+                          <button className="bg-gray-900 text-white px-2 py-1 rounded text-xs">Send</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ============ STUDENT DASHBOARD ============ */}
+                {activeScreen === 'student-dashboard' && (
+                  <div className="relative">
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-full bg-gray-300" />
+                        <div>
+                          <h1 className="text-lg font-bold text-gray-900">Emma Wilson</h1>
+                          <div className="text-sm text-gray-500">🎹 Piano • 1.5 years • Intermediate</div>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">Jazz Band</span>
+                          </div>
+                        </div>
+                      </div>
+                      <button onClick={() => setActiveScreen('messaging')} className="bg-gray-100 px-3 py-2 rounded-lg text-sm flex items-center gap-1.5 hover:bg-gray-200">
+                        <span>💬</span> Message Sarah
+                      </button>
+                    </div>
+
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h2 className="font-bold text-gray-900 text-sm">February 2026</h2>
+                        <div className="flex gap-1">
+                          <button className="text-xs text-gray-500 px-2">←</button>
+                          <button className="text-xs text-gray-500 px-2">→</button>
+                        </div>
+                      </div>
+                      <div className="border border-gray-200 rounded-lg overflow-hidden">
+                        <div className="grid grid-cols-7 bg-gray-50 border-b border-gray-200">
+                          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+                            <div key={i} className="p-1.5 text-xs text-gray-500 text-center font-medium">{d}</div>
+                          ))}
+                        </div>
+                        <div className="grid grid-cols-7 text-xs">
+                          {[26, 27, 28, 29, 30, 31, 1].map((d, i) => (
+                            <div key={i} className={`p-1 text-center border-b border-r border-gray-100 min-h-[32px] ${d > 25 ? 'text-gray-300' : ''}`}>
+                              <span>{d}</span>
+                            </div>
+                          ))}
+                          {[2, 3, 4, 5, 6, 7, 8].map((d, i) => (
+                            <div key={i} className={`p-1 text-center border-b border-r border-gray-100 min-h-[32px] ${d === 3 ? 'bg-blue-50' : ''} ${d === 6 ? 'bg-orange-50' : ''}`}>
+                              <span className={d === 3 || d === 6 ? 'font-bold' : ''}>{d}</span>
+                              {d === 3 && <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mx-auto mt-0.5"></div>}
+                              {d === 6 && <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mx-auto mt-0.5"></div>}
+                            </div>
+                          ))}
+                          {[9, 10, 11, 12, 13, 14, 15].map((d, i) => (
+                            <div key={i} className={`p-1 text-center border-b border-r border-gray-100 min-h-[32px] ${d === 10 ? 'bg-blue-50' : ''} ${d === 13 ? 'bg-orange-50' : ''}`}>
+                              <span className={d === 10 || d === 13 ? 'font-bold' : ''}>{d}</span>
+                              {d === 10 && <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mx-auto mt-0.5"></div>}
+                              {d === 13 && <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mx-auto mt-0.5"></div>}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex gap-3 mt-2 text-xs text-gray-500">
+                        <span className="flex items-center gap-1"><span className="w-2 h-2 bg-blue-500 rounded-full"></span> Lesson</span>
+                        <span className="flex items-center gap-1"><span className="w-2 h-2 bg-orange-500 rounded-full"></span> Rehearsal</span>
+                      </div>
+                    </div>
+
+                    <div className="mb-20">
+                      <div className="flex items-center justify-between mb-2">
+                        <h2 className="font-bold text-gray-900 text-sm">Assignments</h2>
+                        <div className="flex items-center gap-2">
+                          <input type="text" placeholder="Search..." className="text-xs border border-gray-200 rounded px-2 py-1 w-24" />
+                          <select className="text-xs border border-gray-200 rounded px-2 py-1">
+                            <option>All Status</option>
+                            <option>To Do</option>
+                            <option>Approved</option>
+                          </select>
+                          <select className="text-xs border border-gray-200 rounded px-2 py-1">
+                            <option>Due Date</option>
+                            <option>Newest</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        {[
+                          { task: 'Scales - G Major', due: 'Due tomorrow', status: 'To Do', hasVideo: true },
+                          { task: 'Watch: Finger Positioning', due: 'Due in 3 days', status: 'To Do', hasVideo: true },
+                          { task: 'Jazz Band - Learn Part A', due: 'Due Thu', status: 'To Do', hasVideo: false },
+                          { task: 'Chord Transitions', due: 'Jan 25', status: 'Approved', hasVideo: false },
+                        ].map((item, i) => (
+                          <div key={i} onClick={() => setActiveScreen('assignment-detail')} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-gray-300">
+                            <div>
+                              <div className="font-medium text-sm text-gray-900">{item.task}</div>
+                              <div className="text-xs text-gray-500">{item.due}</div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className={`text-xs px-2 py-0.5 rounded ${item.status === 'Approved' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>{item.status}</span>
+                              {item.hasVideo && <span className="text-sm">🎥</span>}
+                              <span className="text-gray-400">→</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="absolute bottom-0 right-0 w-64 bg-white border border-gray-200 rounded-t-lg shadow-lg">
+                      <div className="flex items-center justify-between p-2 bg-gray-900 text-white rounded-t-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-gray-400" />
+                          <span className="text-sm font-medium">Sarah Chen</span>
+                        </div>
+                        <button className="text-gray-400 hover:text-white">−</button>
+                      </div>
+                      <div className="h-32 p-2 space-y-2 overflow-auto bg-gray-50">
+                        <div className="flex justify-start">
+                          <div className="bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs max-w-[80%]">Great job on the scales! Keep practicing.</div>
+                        </div>
+                        <div className="flex justify-end">
+                          <div className="bg-gray-900 text-white rounded-lg px-2 py-1 text-xs max-w-[80%]">Thanks! 🎹</div>
+                        </div>
+                      </div>
+                      <div className="p-2 border-t border-gray-200">
+                        <div className="flex gap-1">
+                          <input type="text" placeholder="Type a message..." className="flex-1 border border-gray-200 rounded px-2 py-1 text-xs" />
+                          <button className="bg-gray-900 text-white px-2 py-1 rounded text-xs">Send</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ============ PARENT DASHBOARD ============ */}
+                {activeScreen === 'parent-dashboard' && (
+                  <div className="relative">
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-full bg-gray-300" />
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h1 className="text-lg font-bold text-gray-900">Lucas Garcia</h1>
+                            <select className="text-xs border border-gray-200 rounded px-1 py-0.5">
+                              <option>Lucas</option>
+                              <option>Sofia</option>
+                            </select>
+                          </div>
+                          <div className="text-sm text-gray-500">🎸 Guitar • 8 months • Beginner</div>
+                        </div>
+                      </div>
+                      <button onClick={() => setActiveScreen('messaging')} className="bg-gray-100 px-3 py-2 rounded-lg text-sm flex items-center gap-1.5 hover:bg-gray-200">
+                        <span>💬</span> Message Sarah
+                      </button>
+                    </div>
+
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h2 className="font-bold text-gray-900 text-sm">February 2026</h2>
+                        <div className="flex gap-1">
+                          <button className="text-xs text-gray-500 px-2">←</button>
+                          <button className="text-xs text-gray-500 px-2">→</button>
+                        </div>
+                      </div>
+                      <div className="border border-gray-200 rounded-lg overflow-hidden">
+                        <div className="grid grid-cols-7 bg-gray-50 border-b border-gray-200">
+                          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+                            <div key={i} className="p-1.5 text-xs text-gray-500 text-center font-medium">{d}</div>
+                          ))}
+                        </div>
+                        <div className="grid grid-cols-7 text-xs">
+                          {[26, 27, 28, 29, 30, 31, 1].map((d, i) => (
+                            <div key={i} className={`p-1 text-center border-b border-r border-gray-100 min-h-[32px] ${d > 25 ? 'text-gray-300' : ''}`}>
+                              <span>{d}</span>
+                            </div>
+                          ))}
+                          {[2, 3, 4, 5, 6, 7, 8].map((d, i) => (
+                            <div key={i} className={`p-1 text-center border-b border-r border-gray-100 min-h-[32px] ${d === 3 ? 'bg-blue-50' : ''}`}>
+                              <span className={d === 3 ? 'font-bold' : ''}>{d}</span>
+                              {d === 3 && <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mx-auto mt-0.5"></div>}
+                            </div>
+                          ))}
+                          {[9, 10, 11, 12, 13, 14, 15].map((d, i) => (
+                            <div key={i} className={`p-1 text-center border-b border-r border-gray-100 min-h-[32px] ${d === 10 ? 'bg-blue-50' : ''}`}>
+                              <span className={d === 10 ? 'font-bold' : ''}>{d}</span>
+                              {d === 10 && <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mx-auto mt-0.5"></div>}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex gap-3 mt-2 text-xs text-gray-500">
+                        <span className="flex items-center gap-1"><span className="w-2 h-2 bg-blue-500 rounded-full"></span> Lesson</span>
+                      </div>
+                    </div>
+
+                    <div className="mb-20">
+                      <div className="flex items-center justify-between mb-2">
+                        <h2 className="font-bold text-gray-900 text-sm">Assignments</h2>
+                        <div className="flex items-center gap-2">
+                          <input type="text" placeholder="Search..." className="text-xs border border-gray-200 rounded px-2 py-1 w-24" />
+                          <select className="text-xs border border-gray-200 rounded px-2 py-1">
+                            <option>All Status</option>
+                            <option>To Do</option>
+                            <option>Approved</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        {[
+                          { task: 'Learn "Twinkle Twinkle"', due: 'Due tomorrow', status: 'To Do' },
+                          { task: 'Finger exercises', due: 'Due in 3 days', status: 'To Do' },
+                          { task: 'Watch: Basic Chords', due: 'Jan 28', status: 'Approved' },
+                        ].map((item, i) => (
+                          <div key={i} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-gray-300">
+                            <div>
+                              <div className="font-medium text-sm text-gray-900">{item.task}</div>
+                              <div className="text-xs text-gray-500">{item.due}</div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className={`text-xs px-2 py-0.5 rounded ${item.status === 'Approved' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>{item.status}</span>
+                              <span className="text-gray-400">→</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="absolute bottom-0 right-0 w-64 bg-white border border-gray-200 rounded-t-lg shadow-lg">
+                      <div className="flex items-center justify-between p-2 bg-gray-900 text-white rounded-t-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-gray-400" />
+                          <div>
+                            <span className="text-sm font-medium">Sarah ↔ Lucas</span>
+                            <span className="text-xs text-gray-400 ml-1">(You're included)</span>
+                          </div>
+                        </div>
+                        <button className="text-gray-400 hover:text-white">−</button>
+                      </div>
+                      <div className="h-32 p-2 space-y-2 overflow-auto bg-gray-50">
+                        <div className="flex justify-start">
+                          <div className="bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs max-w-[80%]">
+                            <span className="text-gray-400 text-[10px]">Sarah:</span> Great job on practice!
+                          </div>
+                        </div>
+                        <div className="flex justify-end">
+                          <div className="bg-blue-100 text-blue-800 rounded-lg px-2 py-1 text-xs max-w-[80%]">
+                            <span className="text-blue-500 text-[10px]">Lucas:</span> Thanks! 🎸
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-2 border-t border-gray-200">
+                        <div className="flex gap-1">
+                          <input type="text" placeholder="Type a message..." className="flex-1 border border-gray-200 rounded px-2 py-1 text-xs" />
+                          <button className="bg-gray-900 text-white px-2 py-1 rounded text-xs">Send</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ============ OTHER SCREENS PLACEHOLDER ============ */}
+                {!['teacher-dashboard', 'student-dashboard', 'parent-dashboard'].includes(activeScreen) && (
+                  <div className="flex items-center justify-center h-full">
+                    <div className="text-center text-gray-500">
+                      <div className="text-4xl mb-2">🎵</div>
+                      <div className="font-medium">{screens.find(s => s.id === activeScreen)?.label || activeScreen}</div>
+                      <div className="text-sm">View full wireframes.jsx for complete screen</div>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<MusicDeskWireframes />, document.getElementById('root'));
+  </script>
+</body>
+</html>

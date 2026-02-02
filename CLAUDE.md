@@ -2,12 +2,18 @@
 
 SaaS management platform for music schools and independent teachers.
 
+**Repo:** https://github.com/keithbarney/heavy-music-school
+
 ## Project Status
 - **Stage:** Prototype (HTML/React)
 - **Business Plan:** Complete (see Music-School-Business-Plan.docx)
 
 ## Key Files
 - `prototype.html` - Interactive UI prototype (React + Tailwind)
+- `wireframes.html` - Static wireframe layouts
+- `wireframes.jsx` - React component wireframes
+- `personas-and-stories.md` - User personas and stories
+- `Music-School-Business-Plan.docx` - Business plan document
 
 ## User Personas
 | Role | Name | Details |

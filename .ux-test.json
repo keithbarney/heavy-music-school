@@ -39,6 +39,20 @@
         { "action": "wait", "ms": 2000 },
         { "action": "assertNoErrors" }
       ]
+    },
+    {
+      "name": "Teacher invite modal",
+      "steps": [
+        { "action": "goto", "url": "/dashboard" },
+        { "action": "wait", "ms": 1000 },
+        { "action": "click", "selector": "button:has-text('Invite')" },
+        { "action": "wait", "ms": 500 },
+        { "action": "assertVisible", "selector": "h2:has-text('Invite Students')" },
+        { "action": "type", "selector": "textarea", "value": "test-invite@example.com" },
+        { "action": "assertVisible", "selector": "button:has-text('Send 1 Invite')" },
+        { "action": "click", "selector": "button:has-text('Close')" },
+        { "action": "assertNoErrors" }
+      ]
     }
   ]
 }

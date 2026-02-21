@@ -14,6 +14,7 @@ export function AuthForm() {
   const [fullName, setFullName] = useState('');
   const [role, setRole] = useState<Role>('teacher');
   const [magicLinkSent, setMagicLinkSent] = useState(false);
+  const [signupSuccess, setSignupSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,6 +25,7 @@ export function AuthForm() {
     try {
       if (mode === 'signup') {
         await signUp(email, password, fullName, role);
+        setSignupSuccess(true);
       } else {
         await signIn(email, password);
       }
@@ -47,6 +49,7 @@ export function AuthForm() {
     setMode(mode === 'signin' ? 'signup' : 'signin');
     clearError();
     setMagicLinkSent(false);
+    setSignupSuccess(false);
   };
 
   return (
@@ -114,6 +117,10 @@ export function AuthForm() {
           Send magic link
         </button>
       </form>
+
+      {signupSuccess && !error && (
+        <p className="mt-3 text-sm text-accent">Account created — check your email to confirm.</p>
+      )}
 
       {magicLinkSent && (
         <p className="mt-3 text-sm text-accent">Magic link sent — check your email.</p>

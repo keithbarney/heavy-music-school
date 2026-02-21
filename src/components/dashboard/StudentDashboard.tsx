@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { useAssignments } from '@/hooks/useAssignments';
 import { useLessons } from '@/hooks/useLessons';
@@ -18,12 +19,34 @@ export function StudentDashboard({ profile }: { profile: Profile }) {
   const [error, setError] = useState<string | null>(null);
   const { assignments } = useAssignments(profile.id, 'student');
   const { lessons } = useLessons(profile.id, 'student');
+  const searchParams = useSearchParams();
+  const autoConnectAttempted = useRef(false);
 
   const nextLesson = lessons.find(
     (l) => l.status === 'booked' && new Date(l.starts_at) > new Date()
   );
 
   const supabase = createClient();
+
+  const connectWithCode = useCallback(async (code: string) => {
+    const { data: teacher, error: findErr } = await supabase
+      .from('profiles')
+      .select('id, full_name')
+      .eq('role', 'teacher')
+      .eq('join_code', code.toUpperCase())
+      .maybeSingle();
+
+    if (findErr || !teacher) return false;
+
+    const { error: linkErr } = await supabase
+      .from('teacher_student_links')
+      .upsert({ teacher_id: teacher.id, student_id: profile.id });
+
+    if (linkErr) return false;
+
+    setConnectedTeacher(teacher.full_name);
+    return true;
+  }, [supabase, profile.id]);
 
   const loadConnection = useCallback(async () => {
     const { data } = await supabase
@@ -36,12 +59,42 @@ export function StudentDashboard({ profile }: { profile: Profile }) {
       setConnectedTeacher(
         (data as unknown as TeacherRow).teacher?.full_name ?? 'Unknown teacher'
       );
+      return true;
     }
+    return false;
   }, [supabase, profile.id]);
 
   useEffect(() => {
     loadConnection();
   }, [loadConnection]);
+
+  // Auto-connect via ?join= param or localStorage
+  useEffect(() => {
+    if (autoConnectAttempted.current) return;
+    if (connectedTeacher) return;
+
+    const joinParam = searchParams.get('join');
+    const joinCode = joinParam || localStorage.getItem('hms_join_code');
+
+    if (!joinCode) return;
+
+    autoConnectAttempted.current = true;
+
+    // Store in localStorage as backup in case profile isn't created yet
+    if (joinParam) {
+      localStorage.setItem('hms_join_code', joinParam);
+      // Clean the URL without reload
+      const url = new URL(window.location.href);
+      url.searchParams.delete('join');
+      window.history.replaceState({}, '', url.toString());
+    }
+
+    connectWithCode(joinCode).then((success) => {
+      if (success) {
+        localStorage.removeItem('hms_join_code');
+      }
+    });
+  }, [searchParams, connectedTeacher, connectWithCode]);
 
   const connectToTeacher = async () => {
     setError(null);

@@ -1,13 +1,16 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { RolePill } from './RolePill';
+import { InviteModal } from './InviteModal';
 
 export function Nav() {
   const { profile, signOut } = useAuth();
   const pathname = usePathname();
+  const [showInvite, setShowInvite] = useState(false);
 
   if (!profile) return null;
 
@@ -39,6 +42,14 @@ export function Nav() {
           </div>
         </div>
         <div className="flex items-center gap-3">
+          {profile.role === 'teacher' && profile.join_code && (
+            <button
+              onClick={() => setShowInvite(true)}
+              className="rounded-lg bg-accent/10 px-3 py-1.5 text-sm font-medium text-accent hover:bg-accent/20"
+            >
+              Invite
+            </button>
+          )}
           <span className="hidden text-sm text-muted sm:inline">{profile.full_name}</span>
           <RolePill role={profile.role} />
           <button
@@ -49,6 +60,9 @@ export function Nav() {
           </button>
         </div>
       </div>
+      {showInvite && profile.join_code && (
+        <InviteModal joinCode={profile.join_code} onClose={() => setShowInvite(false)} />
+      )}
     </nav>
   );
 }

@@ -61,6 +61,12 @@
 - **SS4** As a student, I can cancel a booked lesson
 - **SS5** As a student, I can reschedule by cancelling and rebooking
 
+## Invite Students (V1 — New)
+
+- **I1** As a teacher, I can open an invite modal from the nav bar
+- **I2** As a teacher, I can enter multiple student email addresses and send invites
+- **I3** As a student, clicking an invite link signs me up and auto-connects me to the teacher
+
 ## Dashboard (V1 — Updated)
 
 - **D1** As a teacher, I see a summary card showing total assignments and pending submissions

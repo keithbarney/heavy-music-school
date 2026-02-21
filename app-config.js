@@ -1,3 +1,0 @@
-// Supabase project credentials for Heavy Music School MVP
-export const SUPABASE_URL = "https://spxbqcbovgazqqplepsn.supabase.co";
-export const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNweGJxY2JvdmdhenFxcGxlcHNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2Nzk0MzQsImV4cCI6MjA4NzI1NTQzNH0.f95rEu8k1jz4KxgjiXPc-mD99wPXnUfpI7FHOcq0lPw";

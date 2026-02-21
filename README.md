@@ -2,15 +2,25 @@
 
 A SaaS management platform for music schools and independent music teachers. Streamline scheduling, assignments, billing, messaging, and student progress tracking — all in one place.
 
-## Project Status: Prototype
+## Project Status: MVP Auth Build Started
 
-This project is in the **prototype/validation** stage. Interactive HTML prototypes exist for core user flows, but no production codebase has been built yet.
+This repo now includes a **working MVP auth app** (`index.html` + `app.js`) with Supabase-backed:
+- teacher signup/login
+- student signup/login
+- account separation via RLS
+- teacher/student linking via join code
+
+The original prototype files are still here for design reference.
 
 ## What's Here
 
 | File | Description |
 |------|-------------|
-| `prototype.html` | Interactive React+Tailwind prototype with multi-role UI (teacher, student, parent, admin) |
+| `index.html` | MVP app UI shell (teacher/student auth + linking) |
+| `app.js` | Supabase auth + profile + join-code logic |
+| `app-config.js` | Supabase URL + anon key config |
+| `supabase-schema.sql` | DB schema + RLS policies for MVP |
+| `prototype.html` | Interactive React+Tailwind prototype with multi-role UI (legacy concept) |
 | `wireframes.html` | Static wireframe layouts |
 | `wireframes.jsx` | React component wireframes |
 | `personas-and-stories.md` | User personas, user stories, and wireframe gap analysis |
@@ -48,15 +58,25 @@ This project is in the **prototype/validation** stage. Interactive HTML prototyp
 | Studio | $49/mo | Up to 5 teachers, 100 students |
 | School | $99/mo | Unlimited teachers & students |
 
-## Running the Prototype
+## Running the MVP App
 
-Just open `prototype.html` in a browser — it's a self-contained React app using CDN dependencies (React 18, Babel, Tailwind CSS). No build step required.
+1) In Supabase SQL Editor, run `supabase-schema.sql`.
+2) Fill `app-config.js` with:
+- `SUPABASE_URL`
+- `SUPABASE_ANON_KEY`
+3) Serve locally:
 
 ```bash
-open prototype.html
-# or
-python3 -m http.server 8080  # then visit localhost:8080/prototype.html
+python3 -m http.server 8080
+# then visit http://localhost:8080
 ```
+
+## What Keith needs to provide for Supabase
+
+- Supabase Project URL
+- Supabase anon public key
+- (Optional, for admin scripts later) service role key — keep private, never client-side
+- Auth config choice: email confirmation ON or OFF during MVP testing
 
 ## Competitors
 

@@ -3,9 +3,42 @@
   "startCommand": "npm run dev",
   "type": "nextjs",
   "routes": [
+    "/login",
     "/dashboard",
     "/assignments",
     "/schedule",
     "/schedule/availability"
+  ],
+  "flows": [
+    {
+      "name": "Teacher signup",
+      "steps": [
+        { "action": "goto", "url": "/login" },
+        { "action": "click", "selector": "button:has-text('Sign up')" },
+        { "action": "type", "selector": "input[placeholder*='name' i]", "value": "Test Teacher" },
+        { "action": "type", "selector": "input[type='email']", "value": "uxtest-teacher@test.local" },
+        { "action": "type", "selector": "input[type='password']", "value": "testpass123" },
+        { "action": "click", "selector": "select" },
+        { "action": "click", "selector": "option[value='teacher']" },
+        { "action": "click", "selector": "button[type='submit']" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "assertNoErrors" }
+      ]
+    },
+    {
+      "name": "Student signup",
+      "steps": [
+        { "action": "goto", "url": "/login" },
+        { "action": "click", "selector": "button:has-text('Sign up')" },
+        { "action": "type", "selector": "input[placeholder*='name' i]", "value": "Test Student" },
+        { "action": "type", "selector": "input[type='email']", "value": "uxtest-student@test.local" },
+        { "action": "type", "selector": "input[type='password']", "value": "testpass123" },
+        { "action": "click", "selector": "select" },
+        { "action": "click", "selector": "option[value='student']" },
+        { "action": "click", "selector": "button[type='submit']" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "assertNoErrors" }
+      ]
+    }
   ]
 }

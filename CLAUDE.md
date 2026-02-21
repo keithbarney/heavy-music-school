@@ -3,9 +3,25 @@
 SaaS management platform for music schools and independent teachers.
 
 **Repo:** https://github.com/keithbarney/heavy-music-school
+**Vercel:** https://heavy-music-school.vercel.app
+
+## Tech Stack
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 |
+| Port | 3003 |
+
+## Dev Commands
+```bash
+npm run dev       # Start dev server (localhost:3003)
+npm run build     # Production build
+npx tsc --noEmit  # Typecheck only
+```
 
 ## Project Status
-- **Stage:** Prototype (HTML/React)
+- **Stage:** Scaffolded (Next.js deployed, placeholder page live)
 - **Business Plan:** Complete (see Music-School-Business-Plan.docx)
 
 ## Key Files

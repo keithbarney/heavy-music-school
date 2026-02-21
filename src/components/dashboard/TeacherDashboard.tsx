@@ -1,7 +1,10 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
+import { useAssignments } from '@/hooks/useAssignments';
+import { useLessons } from '@/hooks/useLessons';
 import type { Profile } from '@/types';
 
 interface StudentRow {
@@ -12,6 +15,12 @@ export function TeacherDashboard({ profile }: { profile: Profile }) {
   const [joinCode, setJoinCode] = useState(profile.join_code ?? '');
   const [students, setStudents] = useState<string[]>([]);
   const [generating, setGenerating] = useState(false);
+  const { assignments } = useAssignments(profile.id, 'teacher');
+  const { lessons } = useLessons(profile.id, 'teacher');
+
+  const nextLesson = lessons.find(
+    (l) => l.status === 'booked' && new Date(l.starts_at) > new Date()
+  );
 
   const supabase = createClient();
 
@@ -50,6 +59,34 @@ export function TeacherDashboard({ profile }: { profile: Profile }) {
 
   return (
     <div className="flex flex-col gap-6">
+      <Link
+        href="/assignments"
+        className="flex items-center justify-between rounded-xl border border-card-border bg-card p-4 transition-colors hover:border-accent/40"
+      >
+        <div>
+          <p className="text-sm text-muted">Assignments</p>
+          <p className="text-2xl font-bold">{assignments.length}</p>
+        </div>
+        <span className="text-sm text-accent">View all →</span>
+      </Link>
+
+      <Link
+        href="/schedule"
+        className="flex items-center justify-between rounded-xl border border-card-border bg-card p-4 transition-colors hover:border-accent/40"
+      >
+        <div>
+          <p className="text-sm text-muted">Next Lesson</p>
+          {nextLesson ? (
+            <p className="text-sm font-medium">
+              {nextLesson.student_name} · {new Date(nextLesson.starts_at).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} at {new Date(nextLesson.starts_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+            </p>
+          ) : (
+            <p className="text-sm text-muted">No upcoming lessons</p>
+          )}
+        </div>
+        <span className="text-sm text-accent">View schedule →</span>
+      </Link>
+
       <section>
         <h3 className="mb-2 text-lg font-semibold">Join Code</h3>
         <p className="mb-3 text-sm text-muted">

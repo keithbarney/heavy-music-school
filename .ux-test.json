@@ -1,0 +1,11 @@
+{
+  "port": 3003,
+  "startCommand": "npm run dev",
+  "type": "nextjs",
+  "routes": [
+    "/dashboard",
+    "/assignments",
+    "/schedule",
+    "/schedule/availability"
+  ]
+}

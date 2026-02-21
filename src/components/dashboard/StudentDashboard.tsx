@@ -1,7 +1,10 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
+import { useAssignments } from '@/hooks/useAssignments';
+import { useLessons } from '@/hooks/useLessons';
 import type { Profile } from '@/types';
 
 interface TeacherRow {
@@ -13,6 +16,12 @@ export function StudentDashboard({ profile }: { profile: Profile }) {
   const [connectedTeacher, setConnectedTeacher] = useState<string | null>(null);
   const [connecting, setConnecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { assignments } = useAssignments(profile.id, 'student');
+  const { lessons } = useLessons(profile.id, 'student');
+
+  const nextLesson = lessons.find(
+    (l) => l.status === 'booked' && new Date(l.starts_at) > new Date()
+  );
 
   const supabase = createClient();
 
@@ -80,40 +89,64 @@ export function StudentDashboard({ profile }: { profile: Profile }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <section>
-        <h3 className="mb-2 text-lg font-semibold">Connect to Teacher</h3>
-        <p className="mb-3 text-sm text-muted">
-          Enter your teacher&apos;s join code to connect.
-        </p>
-        <div className="flex gap-3">
-          <input
-            type="text"
-            value={teacherCode}
-            onChange={(e) => setTeacherCode(e.target.value)}
-            placeholder="ABC123"
-            className="flex-1 rounded-lg border border-input-border bg-input-bg px-3 py-2 font-mono text-lg tracking-widest text-foreground uppercase"
-          />
-          <button
-            onClick={connectToTeacher}
-            disabled={connecting}
-            className="rounded-lg bg-accent px-4 py-2 font-semibold text-black hover:bg-accent-hover disabled:opacity-50"
-          >
-            {connecting ? '...' : 'Connect'}
-          </button>
+      <Link
+        href="/assignments"
+        className="flex items-center justify-between rounded-xl border border-card-border bg-card p-4 transition-colors hover:border-accent/40"
+      >
+        <div>
+          <p className="text-sm text-muted">Assignments</p>
+          <p className="text-2xl font-bold">{assignments.length}</p>
         </div>
-        {error && <p className="mt-2 text-sm text-danger">{error}</p>}
-      </section>
+        <span className="text-sm text-accent">View all →</span>
+      </Link>
 
-      <section>
-        <h3 className="mb-2 text-lg font-semibold">Status</h3>
-        {connectedTeacher ? (
-          <p className="text-sm text-accent">
-            Connected to {connectedTeacher}.
+      <Link
+        href="/schedule"
+        className="flex items-center justify-between rounded-xl border border-card-border bg-card p-4 transition-colors hover:border-accent/40"
+      >
+        <div>
+          <p className="text-sm text-muted">Next Lesson</p>
+          {nextLesson ? (
+            <p className="text-sm font-medium">
+              {nextLesson.teacher_name} · {new Date(nextLesson.starts_at).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} at {new Date(nextLesson.starts_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+            </p>
+          ) : (
+            <p className="text-sm text-muted">No upcoming lessons</p>
+          )}
+        </div>
+        <span className="text-sm text-accent">Book a lesson →</span>
+      </Link>
+
+      {!connectedTeacher ? (
+        <section>
+          <h3 className="mb-2 text-lg font-semibold">Connect to Teacher</h3>
+          <p className="mb-3 text-sm text-muted">
+            Enter your teacher&apos;s join code to connect.
           </p>
-        ) : (
-          <p className="text-sm text-muted">Not connected yet.</p>
-        )}
-      </section>
+          <div className="flex gap-3">
+            <input
+              type="text"
+              value={teacherCode}
+              onChange={(e) => setTeacherCode(e.target.value)}
+              placeholder="ABC123"
+              className="flex-1 rounded-lg border border-input-border bg-input-bg px-3 py-2 font-mono text-lg tracking-widest text-foreground uppercase"
+            />
+            <button
+              onClick={connectToTeacher}
+              disabled={connecting}
+              className="rounded-lg bg-accent px-4 py-2 font-semibold text-black hover:bg-accent-hover disabled:opacity-50"
+            >
+              {connecting ? '...' : 'Connect'}
+            </button>
+          </div>
+          {error && <p className="mt-2 text-sm text-danger">{error}</p>}
+        </section>
+      ) : (
+        <section>
+          <h3 className="mb-2 text-lg font-semibold">Your Teacher</h3>
+          <p className="text-sm text-accent">Connected to {connectedTeacher}</p>
+        </section>
+      )}
     </div>
   );
 }

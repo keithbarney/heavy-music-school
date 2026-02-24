@@ -61,7 +61,7 @@ export function Nav() {
         </div>
       </div>
       {showInvite && profile.join_code && (
-        <InviteModal joinCode={profile.join_code} onClose={() => setShowInvite(false)} />
+        <InviteModal joinCode={profile.join_code} teacherName={profile.full_name} onClose={() => setShowInvite(false)} />
       )}
     </nav>
   );

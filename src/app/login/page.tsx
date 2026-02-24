@@ -12,6 +12,8 @@ export default function LoginPage() {
   useEffect(() => {
     if (!loading && user && profile) {
       router.replace('/dashboard');
+    } else if (!loading && user && !profile) {
+      router.replace('/welcome');
     }
   }, [user, profile, loading, router]);
 

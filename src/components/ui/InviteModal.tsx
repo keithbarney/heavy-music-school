@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
 
 interface InviteModalProps {
   joinCode: string;
+  teacherName: string;
   onClose: () => void;
 }
 
@@ -19,12 +19,10 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-export function InviteModal({ joinCode, onClose }: InviteModalProps) {
+export function InviteModal({ joinCode, teacherName, onClose }: InviteModalProps) {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [results, setResults] = useState<{ sent: number; failed: string[] } | null>(null);
-
-  const supabase = createClient();
 
   const handleSend = async () => {
     const emails = parseEmails(input);
@@ -39,17 +37,18 @@ export function InviteModal({ joinCode, onClose }: InviteModalProps) {
     setSending(true);
     setResults(null);
 
-    const redirectTo = `${window.location.origin}/auth/callback?join=${joinCode}`;
     let sent = 0;
     const failed: string[] = [];
 
     for (const email of emails) {
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: { emailRedirectTo: redirectTo },
+      const res = await fetch('/api/invite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, joinCode, teacherName }),
       });
-      if (error) {
-        failed.push(`${email} (${error.message})`);
+      const data = await res.json();
+      if (data.error) {
+        failed.push(`${email} (${data.error})`);
       } else {
         sent++;
       }

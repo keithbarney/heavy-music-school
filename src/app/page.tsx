@@ -12,6 +12,8 @@ export default function Home() {
     if (!loading) {
       if (user && profile) {
         router.replace('/dashboard');
+      } else if (user && !profile) {
+        router.replace('/welcome');
       } else {
         router.replace('/login');
       }

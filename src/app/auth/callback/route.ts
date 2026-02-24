@@ -8,11 +8,25 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
+    const { error, data } = await supabase.auth.exchangeCodeForSession(code);
+    if (!error && data.session) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', data.session.user.id)
+        .single();
+
+      if (profile) {
+        const redirect = join
+          ? `${origin}/dashboard?join=${encodeURIComponent(join)}`
+          : `${origin}/dashboard`;
+        return NextResponse.redirect(redirect);
+      }
+
+      // No profile — new invited user, send to welcome page
       const redirect = join
-        ? `${origin}/dashboard?join=${encodeURIComponent(join)}`
-        : `${origin}/dashboard`;
+        ? `${origin}/welcome?join=${encodeURIComponent(join)}`
+        : `${origin}/welcome`;
       return NextResponse.redirect(redirect);
     }
   }

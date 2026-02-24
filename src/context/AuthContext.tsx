@@ -21,6 +21,7 @@ interface AuthContextValue {
   signIn: (email: string, password: string) => Promise<void>;
   signInWithMagicLink: (email: string) => Promise<void>;
   signOut: () => Promise<void>;
+  createProfile: (fullName: string, role: Role) => Promise<void>;
   clearError: () => void;
 }
 
@@ -125,6 +126,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile(null);
   };
 
+  const createProfile = async (fullName: string, role: Role) => {
+    if (!user) throw new Error('No authenticated user');
+    const { error: insertError } = await supabase
+      .from('profiles')
+      .insert({ id: user.id, full_name: fullName, role });
+    if (insertError) throw insertError;
+    await loadProfile(user.id);
+  };
+
   const clearError = () => setError(null);
 
   return (
@@ -138,6 +148,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signIn,
         signInWithMagicLink,
         signOut,
+        createProfile,
         clearError,
       }}
     >

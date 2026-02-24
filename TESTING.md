@@ -66,6 +66,7 @@
 - **I1** As a teacher, I can open an invite modal from the nav bar
 - **I2** As a teacher, I can enter multiple student email addresses and send invites
 - **I3** As a student, clicking an invite link signs me up and auto-connects me to the teacher
+- **I4** As an invited student, I land on a welcome page (not sign-in) that shows who invited me and asks for my name
 
 ## Dashboard (V1 — Updated)
 

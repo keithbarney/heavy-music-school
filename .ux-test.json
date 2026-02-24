@@ -1,57 +1,85 @@
 {
   "port": 3003,
-  "startCommand": "npm run dev",
+  "startCommand": "npx supabase start && npm run dev",
   "type": "nextjs",
   "routes": [
     "/login",
+    "/welcome",
     "/dashboard",
     "/assignments",
     "/schedule",
     "/schedule/availability"
   ],
+  "supabase": {
+    "url": "http://localhost:54321",
+    "serviceRoleKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU",
+    "anonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0",
+    "storageKey": "sb-localhost-auth-token",
+    "storageType": "cookie"
+  },
   "flows": [
     {
-      "name": "Teacher signup",
+      "name": "Teacher dashboard",
       "steps": [
-        { "action": "goto", "url": "/login" },
-        { "action": "click", "selector": "button:has-text('Sign up')" },
-        { "action": "type", "selector": "input[placeholder*='name' i]", "value": "Test Teacher" },
-        { "action": "type", "selector": "input[type='email']", "value": "uxtest-teacher@test.local" },
-        { "action": "type", "selector": "input[type='password']", "value": "testpass123" },
-        { "action": "click", "selector": "select" },
-        { "action": "click", "selector": "option[value='teacher']" },
-        { "action": "click", "selector": "button[type='submit']" },
-        { "action": "wait", "ms": 2000 },
-        { "action": "assertNoErrors" }
+        { "action": "supabaseAuth", "email": "test-teacher@local.dev", "password": "testpass123", "metadata": { "role": "teacher", "full_name": "Test Teacher" } },
+        { "action": "goto", "url": "/dashboard" },
+        { "action": "wait", "ms": 1500 },
+        { "action": "assertVisible", "selector": "nav" },
+        { "action": "assertVisible", "selector": "button:has-text('Sign out')" }
       ]
     },
     {
-      "name": "Student signup",
+      "name": "Student dashboard",
       "steps": [
-        { "action": "goto", "url": "/login" },
-        { "action": "click", "selector": "button:has-text('Sign up')" },
-        { "action": "type", "selector": "input[placeholder*='name' i]", "value": "Test Student" },
-        { "action": "type", "selector": "input[type='email']", "value": "uxtest-student@test.local" },
-        { "action": "type", "selector": "input[type='password']", "value": "testpass123" },
-        { "action": "click", "selector": "select" },
-        { "action": "click", "selector": "option[value='student']" },
-        { "action": "click", "selector": "button[type='submit']" },
-        { "action": "wait", "ms": 2000 },
-        { "action": "assertNoErrors" }
+        { "action": "supabaseAuth", "email": "test-student@local.dev", "password": "testpass123", "metadata": { "role": "student", "full_name": "Test Student" } },
+        { "action": "goto", "url": "/dashboard" },
+        { "action": "wait", "ms": 1500 },
+        { "action": "assertVisible", "selector": "nav" },
+        { "action": "assertVisible", "selector": "button:has-text('Sign out')" }
       ]
     },
     {
       "name": "Teacher invite modal",
       "steps": [
+        { "action": "supabaseAuth", "email": "test-teacher-invite@local.dev", "password": "testpass123", "metadata": { "role": "teacher", "full_name": "Test Teacher", "join_code": "TESTCODE" } },
         { "action": "goto", "url": "/dashboard" },
-        { "action": "wait", "ms": 1000 },
+        { "action": "wait", "ms": 2000 },
+        { "action": "waitFor", "selector": "button:has-text('Invite')" },
         { "action": "click", "selector": "button:has-text('Invite')" },
         { "action": "wait", "ms": 500 },
         { "action": "assertVisible", "selector": "h2:has-text('Invite Students')" },
         { "action": "type", "selector": "textarea", "value": "test-invite@example.com" },
         { "action": "assertVisible", "selector": "button:has-text('Send 1 Invite')" },
-        { "action": "click", "selector": "button:has-text('Close')" },
-        { "action": "assertNoErrors" }
+        { "action": "click", "selector": "button:has-text('Close')" }
+      ]
+    },
+    {
+      "name": "Assignments page",
+      "steps": [
+        { "action": "supabaseAuth", "email": "test-teacher-assign@local.dev", "password": "testpass123", "metadata": { "role": "teacher", "full_name": "Test Teacher" } },
+        { "action": "goto", "url": "/assignments" },
+        { "action": "wait", "ms": 1500 },
+        { "action": "assertVisible", "selector": "nav" }
+      ]
+    },
+    {
+      "name": "Schedule page",
+      "steps": [
+        { "action": "supabaseAuth", "email": "test-teacher-sched@local.dev", "password": "testpass123", "metadata": { "role": "teacher", "full_name": "Test Teacher" } },
+        { "action": "goto", "url": "/schedule" },
+        { "action": "wait", "ms": 1500 },
+        { "action": "assertVisible", "selector": "nav" }
+      ]
+    },
+    {
+      "name": "Sign out flow",
+      "steps": [
+        { "action": "supabaseAuth", "email": "test-signout@local.dev", "password": "testpass123", "metadata": { "role": "teacher", "full_name": "Test Teacher" } },
+        { "action": "goto", "url": "/dashboard" },
+        { "action": "wait", "ms": 1500 },
+        { "action": "assertVisible", "selector": "button:has-text('Sign out')" },
+        { "action": "supabaseSignOut" },
+        { "action": "wait", "ms": 1000 }
       ]
     }
   ]

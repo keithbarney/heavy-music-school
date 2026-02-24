@@ -6,14 +6,16 @@ import { useAuth } from '@/hooks/useAuth';
 import { Nav } from './Nav';
 
 export function AuthLayout({ children }: { children: ReactNode }) {
-  const { user, loading } = useAuth();
+  const { user, profile, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!loading && !user) {
       router.replace('/login');
+    } else if (!loading && user && !profile) {
+      router.replace('/welcome');
     }
-  }, [user, loading, router]);
+  }, [user, profile, loading, router]);
 
   if (loading) {
     return (
@@ -23,7 +25,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
     );
   }
 
-  if (!user) return null;
+  if (!user || !profile) return null;
 
   return (
     <div className="min-h-screen">

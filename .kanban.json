@@ -4,7 +4,7 @@
     {
       "id": "HMS-001",
       "title": "Multi-student assignment targeting",
-      "status": "in-progress",
+      "status": "review",
       "priority": "high",
       "description": "US-44: Teacher can assign the same homework to multiple students at once. Add student selector to assignment creation form, create assignment_targets join table.",
       "created": "2026-03-09",

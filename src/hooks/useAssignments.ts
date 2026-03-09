@@ -31,15 +31,39 @@ export function useAssignments(userId: string, role: 'teacher' | 'student') {
 
   useEffect(() => { load(); }, [load]);
 
-  const create = async (title: string, description: string, dueDate: string | null) => {
-    const { error } = await supabase.from('assignments').insert({
+  const create = async (title: string, description: string, dueDate: string | null, studentIds?: string[]) => {
+    const { data: inserted, error } = await supabase.from('assignments').insert({
       teacher_id: userId,
       title,
       description: description || null,
       due_date: dueDate || null,
-    });
-    if (!error) await load();
-    return error;
+    }).select('id').single();
+
+    if (error || !inserted) {
+      if (!error) await load();
+      return error;
+    }
+
+    const assignmentId = inserted.id;
+
+    // Insert assignment targets if specific students were selected
+    if (studentIds && studentIds.length > 0) {
+      await supabase.from('assignment_targets').insert(
+        studentIds.map((sid) => ({ assignment_id: assignmentId, student_id: sid }))
+      );
+
+      // Create submission stubs for each targeted student
+      await supabase.from('assignment_submissions').insert(
+        studentIds.map((sid) => ({
+          assignment_id: assignmentId,
+          student_id: sid,
+          status: 'todo',
+        }))
+      );
+    }
+
+    await load();
+    return null;
   };
 
   return { assignments, loading, reload: load, create };

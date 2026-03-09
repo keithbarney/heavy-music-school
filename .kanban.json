@@ -67,7 +67,7 @@
     {
       "id": "HMS-008",
       "title": "Mobile responsive layout",
-      "status": "ready",
+      "status": "review",
       "priority": "high",
       "description": "US-75: App works comfortably on mobile with responsive layout. Single-column views, touch-friendly buttons, responsive nav, mobile-optimized schedule/calendar views.",
       "created": "2026-03-09",

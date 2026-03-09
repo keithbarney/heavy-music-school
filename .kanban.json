@@ -13,7 +13,7 @@
     {
       "id": "HMS-002",
       "title": "Assignment templates",
-      "status": "in-progress",
+      "status": "review",
       "priority": "medium",
       "description": "US-45: Teacher can save and reuse assignment templates. Store templates in a new templates table, add template picker to assignment creation form.",
       "created": "2026-03-09",

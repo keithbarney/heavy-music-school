@@ -34,37 +34,37 @@ export function AvailabilityForm({ onAdd }: AvailabilityFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <div className="flex flex-wrap gap-3">
-        <select
-          value={day}
-          onChange={(e) => setDay(Number(e.target.value))}
-          className="rounded-lg border border-input-border bg-input-bg px-3 py-2 text-sm text-foreground"
-        >
-          {DAY_NAMES.map((name, i) => (
-            <option key={i} value={i}>{name}</option>
-          ))}
-        </select>
+      <select
+        value={day}
+        onChange={(e) => setDay(Number(e.target.value))}
+        className="w-full rounded-lg border border-input-border bg-input-bg px-3 py-2 text-sm text-foreground sm:w-auto"
+      >
+        {DAY_NAMES.map((name, i) => (
+          <option key={i} value={i}>{name}</option>
+        ))}
+      </select>
+      <div className="flex items-center gap-3">
         <input
           type="time"
           value={startTime}
           onChange={(e) => setStartTime(e.target.value)}
-          className="rounded-lg border border-input-border bg-input-bg px-3 py-2 text-sm text-foreground"
+          className="flex-1 rounded-lg border border-input-border bg-input-bg px-3 py-2 text-sm text-foreground"
         />
-        <span className="self-center text-sm text-muted">to</span>
+        <span className="text-sm text-muted">to</span>
         <input
           type="time"
           value={endTime}
           onChange={(e) => setEndTime(e.target.value)}
-          className="rounded-lg border border-input-border bg-input-bg px-3 py-2 text-sm text-foreground"
+          className="flex-1 rounded-lg border border-input-border bg-input-bg px-3 py-2 text-sm text-foreground"
         />
-        <button
-          type="submit"
-          disabled={saving}
-          className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-black hover:bg-accent-hover disabled:opacity-50"
-        >
-          {saving ? '...' : 'Add Window'}
-        </button>
       </div>
+      <button
+        type="submit"
+        disabled={saving}
+        className="w-full rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-black hover:bg-accent-hover disabled:opacity-50 sm:w-auto sm:self-start"
+      >
+        {saving ? '...' : 'Add Window'}
+      </button>
       {error && <p className="text-sm text-danger">{error}</p>}
     </form>
   );

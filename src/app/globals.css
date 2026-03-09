@@ -1,31 +1,23 @@
 @import "tailwindcss";
+@import "../styles/hds-tokens.css";
 
+/* Bridge: project-specific tokens aliased to HDS */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --card: #f4f4f5;
-  --card-border: #e4e4e7;
-  --muted: #71717a;
-  --accent: #22c55e;
-  --accent-hover: #16a34a;
-  --danger: #ef4444;
-  --danger-hover: #dc2626;
-  --input-bg: #ffffff;
-  --input-border: #d4d4d8;
-}
+  --music-school-accent: #22c55e;
+  --music-school-accent-hover: #16a34a;
+  --music-school-danger-hover: #dc2626;
 
-.dark {
-  --background: #0b0f19;
-  --foreground: #e2e8f0;
-  --card: #121a2b;
-  --card-border: rgba(148, 163, 184, 0.2);
-  --muted: #94a3b8;
-  --accent: #22c55e;
-  --accent-hover: #16a34a;
-  --danger: #ef4444;
-  --danger-hover: #dc2626;
-  --input-bg: #0f172a;
-  --input-border: rgba(148, 163, 184, 0.25);
+  --background: var(--hds-bg-default);
+  --foreground: var(--hds-text-strong);
+  --card: var(--hds-surface-default);
+  --card-border: var(--hds-border-default);
+  --muted: var(--hds-text-muted);
+  --accent: var(--music-school-accent);
+  --accent-hover: var(--music-school-accent-hover);
+  --danger: var(--hds-feedback-danger);
+  --danger-hover: var(--music-school-danger-hover);
+  --input-bg: var(--hds-bg-inset);
+  --input-border: var(--hds-border-default);
 }
 
 @theme inline {
@@ -48,4 +40,22 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Touch-friendly minimum tap targets on mobile */
+@media (max-width: 640px) {
+  button,
+  a,
+  select,
+  [role="button"] {
+    min-height: 44px;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
 }

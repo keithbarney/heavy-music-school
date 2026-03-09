@@ -63,7 +63,7 @@ export function AvailabilityList({ windows, lessonDuration, onRemove, onDuration
               <button
                 onClick={() => handleRemove(w.id)}
                 disabled={removing === w.id}
-                className="rounded-lg px-3 py-1.5 text-sm text-muted hover:text-danger disabled:opacity-50"
+                className="rounded-lg px-3 py-2 text-sm text-muted hover:text-danger disabled:opacity-50"
               >
                 {removing === w.id ? '...' : 'Remove'}
               </button>

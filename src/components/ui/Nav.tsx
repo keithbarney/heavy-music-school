@@ -22,15 +22,15 @@ export function Nav() {
 
   return (
     <nav className="border-b border-card-border bg-card">
-      <div className="mx-auto flex max-w-4xl flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
-        <div className="flex items-center gap-4 sm:gap-6">
+      <div className="mx-auto flex max-w-4xl items-center justify-between gap-2 px-4 py-3">
+        <div className="flex items-center gap-2 sm:gap-6">
           <span className="hidden text-sm font-bold tracking-tight sm:inline">Heavy Music School</span>
           <div className="flex gap-1">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-lg px-2.5 py-1.5 text-sm font-medium transition-colors sm:px-3 ${
+                className={`flex items-center rounded-lg px-2.5 py-2 text-sm font-medium transition-colors sm:px-3 ${
                   pathname === link.href || pathname.startsWith(link.href + '/')
                     ? 'bg-accent/15 text-accent'
                     : 'text-muted hover:text-foreground'
@@ -41,11 +41,11 @@ export function Nav() {
             ))}
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {profile.role === 'teacher' && profile.join_code && (
             <button
               onClick={() => setShowInvite(true)}
-              className="rounded-lg bg-accent/10 px-3 py-1.5 text-sm font-medium text-accent hover:bg-accent/20"
+              className="flex items-center rounded-lg bg-accent/10 px-3 py-2 text-sm font-medium text-accent hover:bg-accent/20"
             >
               Invite
             </button>
@@ -54,7 +54,7 @@ export function Nav() {
           <RolePill role={profile.role} />
           <button
             onClick={signOut}
-            className="rounded-lg px-3 py-1.5 text-sm text-muted hover:text-danger"
+            className="flex items-center rounded-lg px-3 py-2 text-sm text-muted hover:text-danger"
           >
             Sign out
           </button>

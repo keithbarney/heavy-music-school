@@ -65,9 +65,9 @@ export function InviteModal({ joinCode, teacherName, onClose }: InviteModalProps
   const count = emails.length;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 sm:items-center" onClick={onClose}>
       <div
-        className="w-full max-w-md rounded-xl border border-card-border bg-card p-6 shadow-xl"
+        className="w-full max-w-md rounded-t-xl border border-card-border bg-card p-6 shadow-xl sm:rounded-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">

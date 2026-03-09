@@ -1,0 +1,167 @@
+{
+  "project": "heavy-music-school",
+  "tickets": [
+    {
+      "id": "HMS-001",
+      "title": "Multi-student assignment targeting",
+      "status": "review",
+      "priority": "high",
+      "description": "US-44: Teacher can assign the same homework to multiple students at once. Add student selector to assignment creation form, create assignment_targets join table.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-002",
+      "title": "Assignment templates",
+      "status": "ready",
+      "priority": "medium",
+      "description": "US-45: Teacher can save and reuse assignment templates. Store templates in a new templates table, add template picker to assignment creation form.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-003",
+      "title": "Media attachments on assignments",
+      "status": "blocked",
+      "priority": "medium",
+      "description": "US-46: Attach videos, sheet music, and tablature to assignments. Requires Supabase Storage bucket setup — needs human configuration.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-004",
+      "title": "Request redo on submissions",
+      "status": "in-progress",
+      "priority": "medium",
+      "description": "US-47: Teacher can request a redo on a submission instead of just reviewing. Add 'redo' status to submissions, add Request Redo button alongside Review.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-005",
+      "title": "Student progress history view",
+      "status": "ready",
+      "priority": "medium",
+      "description": "US-48: Teacher can view a student's assignment history and progress over time. Add student profile/detail page showing submission timeline, completion rates, feedback history.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-006",
+      "title": "Practice streak and progress stats",
+      "status": "ready",
+      "priority": "medium",
+      "description": "US-51: Student sees streak (consecutive days practiced) and progress stats on dashboard. Calculate from submission timestamps, show streak counter and completion percentage.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-007",
+      "title": "Embedded video player for assignments",
+      "status": "ready",
+      "priority": "low",
+      "description": "US-49: Student can watch embedded tutorial videos in assignment detail. Support YouTube/Vimeo URL parsing and iframe embedding. Depends on HMS-003 for uploaded videos.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-008",
+      "title": "Mobile responsive layout",
+      "status": "ready",
+      "priority": "high",
+      "description": "US-75: App works comfortably on mobile with responsive layout. Single-column views, touch-friendly buttons, responsive nav, mobile-optimized schedule/calendar views.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-009",
+      "title": "In-app messaging system",
+      "status": "blocked",
+      "priority": "medium",
+      "description": "US-71, US-72, US-62: Messaging between teacher, student, and parent. Requires new messages table with RLS policies — needs human review for security.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-010",
+      "title": "Parent role and dashboard",
+      "status": "blocked",
+      "priority": "medium",
+      "description": "US-58-64: Parent can view child's assignments, book lessons, see progress, manage billing. Requires auth/role changes, new DB tables (student_guardians), RLS policies.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-011",
+      "title": "Admin role and dashboard",
+      "status": "blocked",
+      "priority": "low",
+      "description": "US-65-70: Admin can manage teachers, enroll students, view school-wide metrics, manage schedules, send announcements, generate reports. Requires auth/role changes, RLS policies.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-012",
+      "title": "Band management",
+      "status": "blocked",
+      "priority": "low",
+      "description": "US-73-74: Teacher manages band roster and rehearsal schedule, student sees band + private lessons together. Requires new tables, RLS policies.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-013",
+      "title": "Young student simplified view",
+      "status": "ready",
+      "priority": "low",
+      "description": "US-55-57: Young students see simplified dashboard with one practice task, big buttons, star rewards, and visual streak calendar. Frontend-only based on existing data.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-014",
+      "title": "Student badges and achievements",
+      "status": "ready",
+      "priority": "low",
+      "description": "US-53: Students earn badges for milestones (10 assignments completed, 30-day streak). Calculate from existing submission data, display on profile.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-015",
+      "title": "Video recording in-app",
+      "status": "blocked",
+      "priority": "low",
+      "description": "US-52: Student can record practice video directly in app and attach to submission. Requires Supabase Storage + media recording API — needs human setup.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-016",
+      "title": "Sheet music mobile viewer",
+      "status": "blocked",
+      "priority": "low",
+      "description": "US-50: Mobile-friendly sheet music viewer with zoom and pan. Depends on HMS-003 (media attachments) being completed first.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-017",
+      "title": "Multi-tenant organization architecture",
+      "status": "blocked",
+      "priority": "high",
+      "description": "MVP Plan: Migrate from simple profiles+teacher_student_links to organizations+memberships+invites multi-tenant model. Major DB migration + auth flow changes — requires human review.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    },
+    {
+      "id": "HMS-018",
+      "title": "Billing placeholder (plan selection)",
+      "status": "blocked",
+      "priority": "medium",
+      "description": "MVP Plan: Capture org plan selection (solo/studio/school). Stripe integration placeholder. Requires Stripe setup — needs human configuration.",
+      "created": "2026-03-09",
+      "updated": "2026-03-09"
+    }
+  ]
+}

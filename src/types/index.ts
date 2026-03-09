@@ -50,6 +50,14 @@ export interface AssignmentSubmission {
   created_at: string;
 }
 
+export interface AssignmentTemplate {
+  id: string;
+  teacher_id: string;
+  title: string;
+  description: string | null;
+  created_at: string;
+}
+
 // Scheduling
 
 export interface TeacherAvailability {

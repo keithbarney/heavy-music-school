@@ -40,7 +40,7 @@
     {
       "id": "HMS-005",
       "title": "Student progress history view",
-      "status": "ready",
+      "status": "review",
       "priority": "medium",
       "description": "US-48: Teacher can view a student's assignment history and progress over time. Add student profile/detail page showing submission timeline, completion rates, feedback history.",
       "created": "2026-03-09",
@@ -67,7 +67,7 @@
     {
       "id": "HMS-008",
       "title": "Mobile responsive layout",
-      "status": "ready",
+      "status": "review",
       "priority": "high",
       "description": "US-75: App works comfortably on mobile with responsive layout. Single-column views, touch-friendly buttons, responsive nav, mobile-optimized schedule/calendar views.",
       "created": "2026-03-09",

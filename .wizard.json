@@ -1,0 +1,240 @@
+{
+  "projectName": "heavy-music-school",
+  "createdAt": "2026-03-07",
+  "updatedAt": "2026-03-07",
+  "phases": {
+    "idea-vision": {
+      "steps": {
+        "problem-statement": {
+          "tasks": {
+            "ps-1": { "completed": true, "value": "Music schools and independent teachers lack affordable, modern management software for scheduling, assignments, messaging, and billing." },
+            "ps-2": { "completed": true, "value": "Independent music teachers, small music schools, and studio owners managing 10-100+ students" },
+            "ps-3": { "completed": true, "value": "Pain" },
+            "ps-4": { "completed": true, "value": "Google Calendar + Venmo + text messages, or expensive legacy tools like My Music Staff and Jackrabbit Music" },
+            "ps-5": { "completed": true, "value": "Daily" }
+          }
+        },
+        "vision-positioning": {
+          "tasks": {
+            "vp-1": { "completed": true, "value": "An affordable, modern SaaS for music schools — scheduling, student management, assignments, messaging, and billing in one clean interface." },
+            "vp-2": { "completed": true, "value": "Not a music learning app, not a practice tracker, not a marketplace for finding teachers" },
+            "vp-3": { "completed": true, "value": "The go-to management platform for independent music teachers and small schools, replacing spreadsheets and legacy software" }
+          }
+        },
+        "competitive-landscape": {
+          "tasks": {
+            "cl-1": { "completed": true, "value": "My Music Staff (dated UI, expensive), Jackrabbit Music (enterprise-focused, overkill for small studios), Opus1 (limited features), Teachworks (generic, not music-specific), Pembee (UK-focused)" },
+            "cl-2": { "completed": true, "value": "Modern UI, music-specific features (band management, assignments with audio), affordable tiered pricing ($19-99/mo), built for small studios not enterprises" },
+            "cl-3": { "completed": true, "value": "Dated interfaces, too expensive for solo teachers, missing music-specific features like band management and assignment tracking" }
+          }
+        }
+      }
+    },
+    "validation": {
+      "steps": {
+        "validation-research": {
+          "tasks": {
+            "vr-1": { "completed": true, "value": "Personal experience as a music parent (Henry and Evelyn's lessons with teacher Greg), firsthand knowledge of scheduling pain and communication gaps" },
+            "vr-2": { "completed": true, "value": "Scheduling is manual and error-prone, assignment tracking is nonexistent, parent communication relies on text messages" },
+            "vr-3": { "completed": true, "value": "If Greg (the teacher) would switch from his current workflow, the value prop is validated" }
+          }
+        },
+        "scope-definition": {
+          "tasks": {
+            "sd-1": { "completed": true, "value": "Teacher dashboard, student roster, scheduling/booking, assignments, messaging, band management, parent portal, billing, admin dashboard, reports, student profiles with practice tracking" },
+            "sd-2": { "completed": true },
+            "sd-3": { "completed": true, "value": "Teacher dashboard with schedule and student roster, lesson booking, assignment creation, messaging between teacher/student/parent" },
+            "sd-4": { "completed": true, "value": "Practice tracking analytics, audio/video assignment submissions, marketplace for finding teachers, advanced financial reporting" }
+          }
+        }
+      }
+    },
+    "business-model": {
+      "steps": {
+        "revenue-and-costs": {
+          "tasks": {
+            "rc-1": { "completed": true, "value": "Subscription" },
+            "rc-2": { "completed": true, "value": "Solo: $19/mo (1 teacher, 30 students), Studio: $49/mo (5 teachers, 100 students), School: $99/mo (unlimited)" },
+            "rc-3": { "completed": true, "value": "Stripe" },
+            "rc-4": { "completed": true, "value": "Supabase (sharing Heavy Tabs project for now, will get own project): ~$25/mo, Vercel: free tier. Total burn: ~$25/mo" },
+            "rc-5": { "completed": true, "value": "2 Solo subscribers ($38/mo) covers Supabase costs" }
+          }
+        },
+        "legal-compliance": {
+          "tasks": {
+            "lc-1": { "completed": false },
+            "lc-2": { "completed": false },
+            "lc-3": { "completed": false },
+            "lc-4": { "completed": false }
+          }
+        }
+      }
+    },
+    "product-definition": {
+      "steps": {
+        "user-stories": {
+          "tasks": {
+            "us-1": { "completed": true, "value": "Detailed personas and stories in personas-and-stories.md — Teacher (Greg), Students (Henry, Evelyn), Parent (Keith), Admin (Phil) with role-specific stories" },
+            "us-2": { "completed": true, "value": "Acceptance criteria defined per persona role in personas-and-stories.md" }
+          }
+        },
+        "ux-flows": {
+          "tasks": {
+            "ux-1": { "completed": true, "value": "Teacher: Dashboard, Profile, Schedule, Students, Bands, Assignments, Messaging. Student: Dashboard, Profile, Book Lesson, Assignments, Messaging. Parent: Dashboard, Book Lesson, Billing, Messaging. Admin: Dashboard, Reports (gaps in admin screens)." },
+            "ux-2": { "completed": true, "value": "Role-based onboarding — teacher sets up profile and roster, students/parents get invite links" },
+            "ux-3": { "completed": true, "value": "Teacher creates assignments and manages schedule, students view and complete assignments, parents book and pay" },
+            "ux-4": { "completed": true, "value": "Empty states for new accounts, missing admin screens identified as gaps" },
+            "ux-5": { "completed": true }
+          }
+        }
+      }
+    },
+    "design": {
+      "steps": {
+        "visual-design": {
+          "tasks": {
+            "vd-1": { "completed": true, "value": "Tailwind CSS v4 with HDS token sync via extract-hds-tokens.mjs script" },
+            "vd-2": { "completed": true, "value": "Dark theme with HDS tokens synced at build time" },
+            "vd-3": { "completed": true, "value": "Role-specific dashboards, schedule views, roster tables, assignment cards, messaging interface (prototype.html)" },
+            "vd-4": { "completed": true },
+            "vd-5": { "completed": true }
+          }
+        }
+      }
+    },
+    "technical-architecture": {
+      "steps": {
+        "stack-and-infrastructure": {
+          "tasks": {
+            "si-1": { "completed": true, "value": "Next.js 16 (App Router), TypeScript, React 19, Tailwind CSS v4, Supabase SSR" },
+            "si-2": { "completed": true, "value": "Tailwind CSS v4 with HDS token sync" },
+            "si-3": { "completed": true, "value": "Vercel (auto-deploys from GitHub), heavy-music-school.vercel.app" },
+            "si-4": { "completed": true, "value": "Supabase URL and anon key in .env.local" },
+            "si-5": { "completed": true, "value": "Next.js 16 for latest App Router features, Supabase SSR for server-side auth, Tailwind for rapid prototyping" }
+          }
+        },
+        "data-architecture": {
+          "tasks": {
+            "da-1": { "completed": true, "value": "Users (teachers/students/parents/admins), lessons, assignments, bands, band_members, messages, billing records" },
+            "da-2": { "completed": true, "value": "Supabase (Postgres + Auth + RLS), sharing Heavy Tabs project temporarily, will get dedicated project" },
+            "da-3": { "completed": true, "value": "Supabase client with SSR helpers, RLS policies per role" },
+            "da-4": { "completed": true, "value": "Supabase migrations, role-based RLS policies" }
+          }
+        },
+        "auth-authorization": {
+          "tasks": {
+            "aa-1": { "completed": true, "value": "Yes" },
+            "aa-2": { "completed": true, "value": "Supabase Auth with role-based access (teacher, student, parent, admin)" },
+            "aa-3": { "completed": true, "value": "Teacher (manage students, create assignments, schedule), Student (view assignments, book lessons, message), Parent (book lessons, pay, message), Admin (full access, reports)" }
+          }
+        }
+      }
+    },
+    "development": {
+      "steps": {
+        "project-setup": {
+          "tasks": {
+            "ps-setup-1": { "completed": true },
+            "ps-setup-2": { "completed": true },
+            "ps-setup-3": { "completed": true },
+            "ps-setup-4": { "completed": true },
+            "ps-setup-5": { "completed": true }
+          }
+        },
+        "core-features": {
+          "tasks": {
+            "cf-1": { "completed": false },
+            "cf-2": { "completed": false },
+            "cf-3": { "completed": false },
+            "cf-4": { "completed": false },
+            "cf-5": { "completed": false }
+          }
+        },
+        "polish-edge-cases": {
+          "tasks": {
+            "pe-1": { "completed": false },
+            "pe-2": { "completed": false },
+            "pe-3": { "completed": false },
+            "pe-4": { "completed": false },
+            "pe-5": { "completed": false }
+          }
+        }
+      }
+    },
+    "testing-qa": {
+      "steps": {
+        "testing": {
+          "tasks": {
+            "t-1": { "completed": false },
+            "t-2": { "completed": false },
+            "t-3": { "completed": false },
+            "t-4": { "completed": false },
+            "t-5": { "completed": false },
+            "t-6": { "completed": false }
+          }
+        }
+      }
+    },
+    "launch-prep": {
+      "steps": {
+        "content-and-seo": {
+          "tasks": {
+            "cs-1": { "completed": false },
+            "cs-2": { "completed": false },
+            "cs-3": { "completed": false, "value": "" },
+            "cs-4": { "completed": false },
+            "cs-5": { "completed": false, "value": "" }
+          }
+        },
+        "pre-launch-checklist": {
+          "tasks": {
+            "plc-1": { "completed": false },
+            "plc-2": { "completed": false },
+            "plc-3": { "completed": false },
+            "plc-4": { "completed": false },
+            "plc-5": { "completed": false }
+          }
+        }
+      }
+    },
+    "marketing": {
+      "steps": {
+        "launch-marketing": {
+          "tasks": {
+            "lm-1": { "completed": false },
+            "lm-2": { "completed": false },
+            "lm-3": { "completed": false },
+            "lm-4": { "completed": false },
+            "lm-5": { "completed": false }
+          }
+        }
+      }
+    },
+    "launch": {
+      "steps": {
+        "ship-and-monitor": {
+          "tasks": {
+            "sm-1": { "completed": false },
+            "sm-2": { "completed": false },
+            "sm-3": { "completed": false },
+            "sm-4": { "completed": false },
+            "sm-5": { "completed": false }
+          }
+        }
+      }
+    },
+    "post-launch": {
+      "steps": {
+        "feedback-and-iteration": {
+          "tasks": {
+            "fi-1": { "completed": false },
+            "fi-2": { "completed": false },
+            "fi-3": { "completed": false },
+            "fi-4": { "completed": false },
+            "fi-5": { "completed": false }
+          }
+        }
+      }
+    }
+  }
+}

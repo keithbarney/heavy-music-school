@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "sync:hds": "node scripts/extract-hds-tokens.mjs",
+    "predev": "npm run sync:hds",
     "dev": "next dev --port 3003",
+    "prebuild": "npm run sync:hds",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

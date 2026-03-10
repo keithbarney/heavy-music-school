@@ -13,7 +13,7 @@
     {
       "id": "HMS-002",
       "title": "Assignment templates",
-      "status": "ready",
+      "status": "review",
       "priority": "medium",
       "description": "US-45: Teacher can save and reuse assignment templates. Store templates in a new templates table, add template picker to assignment creation form.",
       "created": "2026-03-09",
@@ -31,7 +31,7 @@
     {
       "id": "HMS-004",
       "title": "Request redo on submissions",
-      "status": "ready",
+      "status": "review",
       "priority": "medium",
       "description": "US-47: Teacher can request a redo on a submission instead of just reviewing. Add 'redo' status to submissions, add Request Redo button alongside Review.",
       "created": "2026-03-09",
@@ -40,7 +40,7 @@
     {
       "id": "HMS-005",
       "title": "Student progress history view",
-      "status": "ready",
+      "status": "review",
       "priority": "medium",
       "description": "US-48: Teacher can view a student's assignment history and progress over time. Add student profile/detail page showing submission timeline, completion rates, feedback history.",
       "created": "2026-03-09",
@@ -67,7 +67,7 @@
     {
       "id": "HMS-008",
       "title": "Mobile responsive layout",
-      "status": "review",
+      "status": "ready",
       "priority": "high",
       "description": "US-75: App works comfortably on mobile with responsive layout. Single-column views, touch-friendly buttons, responsive nav, mobile-optimized schedule/calendar views.",
       "created": "2026-03-09",

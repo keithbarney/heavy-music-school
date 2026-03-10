@@ -7,13 +7,18 @@ import { useAssignments } from '@/hooks/useAssignments';
 import { useLessons } from '@/hooks/useLessons';
 import type { Profile } from '@/types';
 
+interface StudentInfo {
+  id: string;
+  full_name: string;
+}
+
 interface StudentRow {
-  student: { full_name: string } | null;
+  student: StudentInfo | null;
 }
 
 export function TeacherDashboard({ profile }: { profile: Profile }) {
   const [joinCode, setJoinCode] = useState(profile.join_code ?? '');
-  const [students, setStudents] = useState<string[]>([]);
+  const [students, setStudents] = useState<StudentInfo[]>([]);
   const [generating, setGenerating] = useState(false);
   const { assignments } = useAssignments(profile.id, 'teacher');
   const { lessons } = useLessons(profile.id, 'teacher');
@@ -27,14 +32,14 @@ export function TeacherDashboard({ profile }: { profile: Profile }) {
   const loadStudents = useCallback(async () => {
     const { data } = await supabase
       .from('teacher_student_links')
-      .select('student:student_id(full_name)')
+      .select('student:student_id(id, full_name)')
       .eq('teacher_id', profile.id);
 
     if (data) {
       setStudents(
-        (data as unknown as StudentRow[]).map(
-          (row) => row.student?.full_name ?? 'Unknown student'
-        )
+        (data as unknown as StudentRow[])
+          .map((row) => row.student)
+          .filter((s): s is StudentInfo => s !== null)
       );
     }
   }, [supabase, profile.id]);
@@ -116,9 +121,15 @@ export function TeacherDashboard({ profile }: { profile: Profile }) {
           <p className="text-sm text-muted">No students connected yet.</p>
         ) : (
           <ul className="flex flex-col gap-1">
-            {students.map((name, i) => (
-              <li key={i} className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm">
-                {name}
+            {students.map((s) => (
+              <li key={s.id}>
+                <Link
+                  href={`/students/${s.id}`}
+                  className="flex items-center justify-between rounded-lg border border-card-border bg-card px-3 py-2 text-sm transition-colors hover:border-accent/40"
+                >
+                  <span>{s.full_name}</span>
+                  <span className="text-xs text-muted">View progress →</span>
+                </Link>
               </li>
             ))}
           </ul>

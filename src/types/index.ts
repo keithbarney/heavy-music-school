@@ -38,6 +38,13 @@ export interface Assignment {
   created_at: string;
 }
 
+export interface AssignmentTarget {
+  id: string;
+  assignment_id: string;
+  student_id: string;
+  created_at: string;
+}
+
 export interface AssignmentSubmission {
   id: string;
   assignment_id: string;

@@ -31,7 +31,7 @@
     {
       "id": "HMS-004",
       "title": "Request redo on submissions",
-      "status": "review",
+      "status": "ready",
       "priority": "medium",
       "description": "US-47: Teacher can request a redo on a submission instead of just reviewing. Add 'redo' status to submissions, add Request Redo button alongside Review.",
       "created": "2026-03-09",

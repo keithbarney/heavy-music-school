@@ -68,8 +68,9 @@ export default function AssignmentDetailPage() {
 }
 
 function TeacherSubmissions({ assignmentId, userId }: { assignmentId: string; userId: string }) {
-  const { submissions, loading, review } = useSubmissions(assignmentId, 'teacher', userId);
+  const { submissions, loading, review, requestRedo } = useSubmissions(assignmentId, 'teacher', userId);
   const [feedbackFor, setFeedbackFor] = useState<string | null>(null);
+  const [redoFor, setRedoFor] = useState<string | null>(null);
   const [feedbackText, setFeedbackText] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -77,6 +78,14 @@ function TeacherSubmissions({ assignmentId, userId }: { assignmentId: string; us
     setSubmitting(true);
     await review(submissionId, feedbackText.trim());
     setFeedbackFor(null);
+    setFeedbackText('');
+    setSubmitting(false);
+  };
+
+  const handleRequestRedo = async (submissionId: string) => {
+    setSubmitting(true);
+    await requestRedo(submissionId, feedbackText.trim());
+    setRedoFor(null);
     setFeedbackText('');
     setSubmitting(false);
   };
@@ -105,13 +114,27 @@ function TeacherSubmissions({ assignmentId, userId }: { assignmentId: string; us
                   <p className="mt-1 text-sm">{s.feedback}</p>
                 </div>
               )}
-              {s.status === 'submitted' && feedbackFor !== s.id && (
-                <button
-                  onClick={() => setFeedbackFor(s.id)}
-                  className="mt-3 rounded-lg bg-accent px-3 py-1.5 text-sm font-semibold text-black hover:bg-accent-hover"
-                >
-                  Review
-                </button>
+              {s.status === 'redo' && s.feedback && (
+                <div className="mt-3 rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
+                  <p className="text-xs font-semibold text-amber-500">Redo Requested</p>
+                  <p className="mt-1 text-sm">{s.feedback}</p>
+                </div>
+              )}
+              {s.status === 'submitted' && feedbackFor !== s.id && redoFor !== s.id && (
+                <div className="mt-3 flex gap-2">
+                  <button
+                    onClick={() => { setFeedbackFor(s.id); setRedoFor(null); }}
+                    className="rounded-lg bg-accent px-3 py-1.5 text-sm font-semibold text-black hover:bg-accent-hover"
+                  >
+                    Review
+                  </button>
+                  <button
+                    onClick={() => { setRedoFor(s.id); setFeedbackFor(null); }}
+                    className="rounded-lg border border-amber-500/30 px-3 py-1.5 text-sm font-medium text-amber-500 hover:bg-amber-500/10"
+                  >
+                    Request Redo
+                  </button>
+                </div>
               )}
               {feedbackFor === s.id && (
                 <div className="mt-3 flex flex-col gap-2">
@@ -132,6 +155,32 @@ function TeacherSubmissions({ assignmentId, userId }: { assignmentId: string; us
                     </button>
                     <button
                       onClick={() => { setFeedbackFor(null); setFeedbackText(''); }}
+                      className="rounded-lg border border-input-border px-3 py-1.5 text-sm text-muted hover:text-foreground"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+              {redoFor === s.id && (
+                <div className="mt-3 flex flex-col gap-2">
+                  <textarea
+                    value={feedbackText}
+                    onChange={(e) => setFeedbackText(e.target.value)}
+                    placeholder="Explain what needs to be redone (optional)..."
+                    rows={3}
+                    className="rounded-lg border border-input-border bg-input-bg px-3 py-2 text-sm text-foreground placeholder:text-muted resize-none"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleRequestRedo(s.id)}
+                      disabled={submitting}
+                      className="rounded-lg bg-amber-500 px-3 py-1.5 text-sm font-semibold text-black hover:bg-amber-600 disabled:opacity-50"
+                    >
+                      {submitting ? 'Saving...' : 'Confirm Redo Request'}
+                    </button>
+                    <button
+                      onClick={() => { setRedoFor(null); setFeedbackText(''); }}
                       className="rounded-lg border border-input-border px-3 py-1.5 text-sm text-muted hover:text-foreground"
                     >
                       Cancel
@@ -165,10 +214,18 @@ function StudentSubmission({ assignmentId, userId }: { assignmentId: string; use
 
   if (loading) return <p className="text-sm text-muted">Loading...</p>;
 
+  const showSubmitForm = !submission || submission.status === 'redo';
+
   return (
     <div>
       <h2 className="mb-3 text-lg font-semibold">Your Submission</h2>
-      {submission ? (
+      {submission && submission.status === 'redo' && submission.feedback && (
+        <div className="mb-4 rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
+          <p className="text-xs font-semibold text-amber-500">Redo Requested</p>
+          <p className="mt-1 text-sm">{submission.feedback}</p>
+        </div>
+      )}
+      {submission && !showSubmitForm ? (
         <div className="rounded-xl border border-card-border bg-card p-4">
           <div className="flex items-center justify-between">
             <StatusBadge status={submission.status} />
@@ -193,7 +250,7 @@ function StudentSubmission({ assignmentId, userId }: { assignmentId: string; use
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Write your response..."
+            placeholder={submission?.status === 'redo' ? "Resubmit your work..." : "Write your response..."}
             rows={5}
             required
             className="w-full rounded-lg border border-input-border bg-input-bg px-3 py-2 text-foreground placeholder:text-muted resize-none"
@@ -203,7 +260,7 @@ function StudentSubmission({ assignmentId, userId }: { assignmentId: string; use
             disabled={submitting}
             className="mt-3 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-black hover:bg-accent-hover disabled:opacity-50"
           >
-            {submitting ? 'Submitting...' : 'Submit Work'}
+            {submitting ? 'Submitting...' : submission?.status === 'redo' ? 'Resubmit Work' : 'Submit Work'}
           </button>
         </form>
       )}
@@ -216,11 +273,13 @@ function StatusBadge({ status }: { status: string }) {
     todo: 'border-muted/30 text-muted',
     submitted: 'border-accent/30 text-accent',
     reviewed: 'border-accent bg-accent/10 text-accent',
+    redo: 'border-amber-500/30 bg-amber-500/10 text-amber-500',
   };
   const labels: Record<string, string> = {
     todo: 'To Do',
     submitted: 'Submitted',
     reviewed: 'Reviewed',
+    redo: 'Redo Requested',
   };
   return (
     <span className={`rounded-full border px-2 py-0.5 text-xs font-medium ${styles[status] ?? ''}`}>

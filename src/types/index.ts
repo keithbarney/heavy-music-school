@@ -27,7 +27,7 @@ export interface AuthState {
   error: string | null;
 }
 
-export type SubmissionStatus = 'todo' | 'submitted' | 'reviewed';
+export type SubmissionStatus = 'todo' | 'submitted' | 'reviewed' | 'redo';
 
 export interface Assignment {
   id: string;

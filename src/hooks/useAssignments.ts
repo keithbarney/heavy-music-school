@@ -104,5 +104,20 @@ export function useSubmissions(assignmentId: string, role: 'teacher' | 'student'
     return error;
   };
 
-  return { submissions, loading, reload: load, submit, review };
+  const requestRedo = async (submissionId: string, feedback: string) => {
+    const { error } = await supabase
+      .from('assignment_submissions')
+      .update({
+        feedback: feedback || null,
+        status: 'redo',
+        content: null,
+        submitted_at: null,
+        reviewed_at: null,
+      })
+      .eq('id', submissionId);
+    if (!error) await load();
+    return error;
+  };
+
+  return { submissions, loading, reload: load, submit, review, requestRedo };
 }

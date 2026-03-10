@@ -13,7 +13,7 @@
     {
       "id": "HMS-002",
       "title": "Assignment templates",
-      "status": "review",
+      "status": "ready",
       "priority": "medium",
       "description": "US-45: Teacher can save and reuse assignment templates. Store templates in a new templates table, add template picker to assignment creation form.",
       "created": "2026-03-09",
@@ -40,7 +40,7 @@
     {
       "id": "HMS-005",
       "title": "Student progress history view",
-      "status": "review",
+      "status": "ready",
       "priority": "medium",
       "description": "US-48: Teacher can view a student's assignment history and progress over time. Add student profile/detail page showing submission timeline, completion rates, feedback history.",
       "created": "2026-03-09",

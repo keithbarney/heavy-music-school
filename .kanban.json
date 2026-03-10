@@ -13,7 +13,7 @@
     {
       "id": "HMS-002",
       "title": "Assignment templates",
-      "status": "ready",
+      "status": "review",
       "priority": "medium",
       "description": "US-45: Teacher can save and reuse assignment templates. Store templates in a new templates table, add template picker to assignment creation form.",
       "created": "2026-03-09",
@@ -31,7 +31,7 @@
     {
       "id": "HMS-004",
       "title": "Request redo on submissions",
-      "status": "ready",
+      "status": "review",
       "priority": "medium",
       "description": "US-47: Teacher can request a redo on a submission instead of just reviewing. Add 'redo' status to submissions, add Request Redo button alongside Review.",
       "created": "2026-03-09",

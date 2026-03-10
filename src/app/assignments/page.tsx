@@ -4,8 +4,10 @@ import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { useAssignments } from '@/hooks/useAssignments';
+import { useTemplates } from '@/hooks/useTemplates';
 import { AuthLayout } from '@/components/ui/AuthLayout';
 import { createClient } from '@/lib/supabase/client';
+import type { AssignmentTemplate } from '@/types';
 
 export default function AssignmentsPage() {
   const { user, profile } = useAuth();
@@ -35,12 +37,14 @@ interface StudentOption {
 
 function TeacherAssignments({ userId }: { userId: string }) {
   const { assignments, loading, create } = useAssignments(userId, 'teacher');
+  const { templates, save: saveTemplate, remove: removeTemplate } = useTemplates(userId);
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
   const [students, setStudents] = useState<StudentOption[]>([]);
+  const [saveAsTemplate, setSaveAsTemplate] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const supabase = createClient();
@@ -75,11 +79,22 @@ function TeacherAssignments({ userId }: { userId: string }) {
     setSelectedStudents([]);
   };
 
+  const applyTemplate = (template: AssignmentTemplate) => {
+    setTitle(template.title);
+    setDescription(template.description ?? '');
+    setShowForm(true);
+  };
+
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) return;
     setSubmitting(true);
     setError(null);
+
+    if (saveAsTemplate) {
+      await saveTemplate(title.trim(), description.trim());
+    }
+
     const err = await create(
       title.trim(),
       description.trim(),
@@ -93,6 +108,7 @@ function TeacherAssignments({ userId }: { userId: string }) {
       setDescription('');
       setDueDate('');
       setSelectedStudents([]);
+      setSaveAsTemplate(false);
       setShowForm(false);
     }
     setSubmitting(false);
@@ -101,12 +117,38 @@ function TeacherAssignments({ userId }: { userId: string }) {
   return (
     <div className="flex flex-col gap-6">
       {!showForm ? (
-        <button
-          onClick={() => setShowForm(true)}
-          className="self-start rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-black hover:bg-accent-hover"
-        >
-          New Assignment
-        </button>
+        <div className="flex flex-col gap-3">
+          <button
+            onClick={() => setShowForm(true)}
+            className="self-start rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-black hover:bg-accent-hover"
+          >
+            New Assignment
+          </button>
+          {templates.length > 0 && (
+            <div>
+              <p className="mb-2 text-sm text-muted">Or start from a template:</p>
+              <div className="flex flex-wrap gap-2">
+                {templates.map((t) => (
+                  <div key={t.id} className="group flex items-center gap-1">
+                    <button
+                      onClick={() => applyTemplate(t)}
+                      className="rounded-lg border border-card-border bg-card px-3 py-2 text-sm transition-colors hover:border-accent/40"
+                    >
+                      {t.title}
+                    </button>
+                    <button
+                      onClick={() => removeTemplate(t.id)}
+                      className="hidden rounded px-1 text-xs text-muted hover:text-danger group-hover:inline"
+                      title="Delete template"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       ) : (
         <form onSubmit={handleCreate} className="rounded-xl border border-card-border bg-card p-4">
           <h3 className="mb-3 text-lg font-semibold">Create Assignment</h3>
@@ -163,6 +205,15 @@ function TeacherAssignments({ userId }: { userId: string }) {
                 </div>
               </div>
             )}
+            <label className="flex items-center gap-2 text-sm text-muted">
+              <input
+                type="checkbox"
+                checked={saveAsTemplate}
+                onChange={(e) => setSaveAsTemplate(e.target.checked)}
+                className="rounded"
+              />
+              Save as template for future use
+            </label>
             {error && <p className="text-sm text-danger">{error}</p>}
             <div className="flex gap-2">
               <button
